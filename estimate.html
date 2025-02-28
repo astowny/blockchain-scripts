@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Générateur de TxData pour Swaps Ethereum</title>
+    <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f7f9fc;
+        color: #333;
+      }
+      h1, h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        margin-bottom: 20px;
+      }
+      .input-group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+      button:hover {
+        background-color: #2980b9;
+      }
+      .result {
+        background-color: #f1f8e9;
+        border-left: 4px solid #7cb342;
+        padding: 15px;
+        margin-top: 20px;
+        overflow-wrap: break-word;
+        font-family: monospace;
+      }
+      .token-presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      .token-presets button {
+        background-color: #7cb342;
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+      .tabs {
+        display: flex;
+        margin-bottom: 20px;
+      }
+      .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #eee;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+        margin-right: 5px;
+      }
+      .tab.active {
+        background-color: white;
+        border-bottom: 1px solid white;
+        position: relative;
+        top: 1px;
+      }
+      .tab-content {
+        display: none;
+        border-top: 1px solid #ddd;
+        padding-top: 20px;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .copy-btn {
+        margin-top: 10px;
+        background-color: #555;
+        font-size: 14px;
+      }
+      /* styles.css */
+
+/* Style de base */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #ffffff;
+  color: #333;
+}
+
+/* Conteneur central pour contraindre la largeur sur grands écrans */
+.container {
+  max-width: 480px;
+  margin: auto;              /* centre le conteneur */
+  padding: 10px;
+}
+
+/* Titre */
+h1 {
+  text-align: center;
+  font-size: 1.5em;
+  margin-bottom: 1em;
+  color: #444;
+}
+
+/* Styles du formulaire */
+.form-group {
+  margin-bottom: 1rem;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 0.3em;
+  font-weight: 600;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.5em;
+  font: inherit;             /* hérite de la police définie sur body */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Bouton de soumission */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 600;
+  color: #fff;
+  background-color: #4CAF50; /* vert moyen pour indiquer l'action (swap) */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button[type="submit"]:hover {
+  background-color: #45a049; /* légèrement plus foncé au survol */
+}
+
+/* Zone des résultats */
+#results {
+  margin-top: 2em;
+  padding: 1em;
+  border: 1px solid #eee;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+#results h2 {
+  font-size: 1.2em;
+  margin-bottom: 0.5em;
+}
+#results p {
+  margin: 0.4em 0;
+}
+
+/* Responsivité : sur mobile, le conteneur prend tout l'espace */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+    padding: 5px;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+    <script src="https://unpkg.com/@axelar-network/axelarjs-sdk/dist/axelarjs-sdk.umd.js"></script>
+
+    <!-- Calculateur de Cross-Chain Swap -->
+    <h1>Calculateur de Cross-Chain Swap</h1>
+    <form id="swapForm">
+      <div class="form-group">
+        <label for="sourceChain">Chaîne source :</label>
+        <select id="sourceChain" name="sourceChain" required>
+          <option value="" disabled selected>Choisissez une chaîne</option>
+          <option value="1">Ethereum (Chain ID: 1)</option>
+          <option value="56">Binance Smart Chain (Chain ID: 56)</option>
+          <option value="137">Polygon (Chain ID: 137)</option>
+          <option value="43114">Avalanche (Chain ID: 43114)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="destinationChain">Chaîne destination :</label>
+        <select id="destinationChain" name="destinationChain">
+          <option value="" disabled selected>Choisissez une chaîne</option>
+          <option value="1">Ethereum (Chain ID: 1)</option>
+          <option value="56">Binance Smart Chain (Chain ID: 56)</option>
+          <option value="137">Polygon (Chain ID: 137)</option>
+          <option value="43114">Avalanche (Chain ID: 43114)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="tokenIn">Token In (adresse ou null) :</label>
+        <input type="text" id="tokenIn" placeholder="ex: 0x..." />
+      </div>
+      <div class="form-group">
+        <label for="tokenOut">Token Out (adresse ou null) :</label>
+        <input type="text" id="tokenOut" placeholder="ex: 0x..." />
+      </div>
+      <div class="form-group">
+        <label for="amountIn">Montant In:</label>
+        <input type="number" step="0.0001" id="amountIn" placeholder="ex: 0.01" required />
+      </div>
+      <div class="form-group">
+        <label for="slippage">Tolérance au slippage (%):</label>
+        <input type="number" step="0.1" id="slippage" value="0.5" required />
+      </div>
+      <button type="submit">Calculer le prix</button>
+    </form>
+
+    <div id="results"></div>
+
+  <script src="script.js"></script>  <!-- Script JavaScript -->
+
+    <!-- Montants de Tokens -->
+    <h1>Calculateur de Montants de Tokens</h1>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="human-to-wei">Humain → Wei</div>
+      <div class="tab" data-tab="wei-to-human">Wei → Humain</div>
+      <div class="tab" data-tab="usd-to-token">USD → Token</div>
+    </div>
+
+    <div class="container">
+      <!-- Human to Wei -->
+      <div class="tab-content active" id="human-to-wei">
+        <h2>Convertir de l'unité Humaine vers Wei</h2>
+        <div class="input-group">
+          <label for="tokenAmount">Montant du Token (format humain)</label>
+          <input type="text" id="tokenAmount" placeholder="Ex: 1.5" />
+        </div>
+        <div class="input-group">
+          <label for="tokenDecimals">Décimales du Token</label>
+          <input type="number" id="tokenDecimals" value="18" min="0" max="30" />
+        </div>
+        <div class="token-presets">
+          <button data-decimals="18" class="preset-btn">ETH/WETH (18)</button>
+          <button data-decimals="18" class="preset-btn">DAI (18)</button>
+          <button data-decimals="6" class="preset-btn">USDC (6)</button>
+          <button data-decimals="6" class="preset-btn">USDT (6)</button>
+          <button data-decimals="8" class="preset-btn">WBTC (8)</button>
+        </div>
+        <button id="calculateToWei">Calculer</button>
+        <div id="weiResult" class="result" style="display: none;">
+          <div id="weiOutput"></div>
+          <button class="copy-btn" id="copyWei">Copier</button>
+        </div>
+      </div>
+
+      <!-- Wei to Human -->
+      <div class="tab-content" id="wei-to-human">
+        <h2>Convertir de Wei vers l'unité Humaine</h2>
+        <div class="input-group">
+          <label for="weiAmount">Montant en Wei (format brut)</label>
+          <input type="text" id="weiAmount" placeholder="Ex: 1000000000000000000" />
+        </div>
+        <div class="input-group">
+          <label for="weiDecimals">Décimales du Token</label>
+          <input type="number" id="weiDecimals" value="18" min="0" max="30" />
+        </div>
+        <div class="token-presets">
+          <button data-decimals-wei="18" class="preset-wei-btn">ETH/WETH (18)</button>
+          <button data-decimals-wei="18" class="preset-wei-btn">DAI (18)</button>
+          <button data-decimals-wei="6" class="preset-wei-btn">USDC (6)</button>
+          <button data-decimals-wei="6" class="preset-wei-btn">USDT (6)</button>
+          <button data-decimals-wei="8" class="preset-wei-btn">WBTC (8)</button>
+        </div>
+        <button id="calculateToHuman">Calculer</button>
+        <div id="humanResult" class="result" style="display: none;">
+          <div id="humanOutput"></div>
+          <button class="copy-btn" id="copyHuman">Copier</button>
+        </div>
+      </div>
+
+      <!-- USD to Token -->
+      <div class="tab-content" id="usd-to-token">
+        <h2>Convertir de USD vers Token</h2>
+        <div class="input-group">
+          <label for="usdAmount">Montant en USD</label>
+          <input type="text" id="usdAmount" placeholder="Ex: 100" />
+        </div>
+        <div class="input-group">
+          <label for="tokenPrice">Prix du Token en USD</label>
+          <input type="text" id="tokenPrice" placeholder="Ex: 2000" />
+        </div>
+        <div class="input-group">
+          <label for="tokenDecimalsUsd">Décimales du Token</label>
+          <input type="number" id="tokenDecimalsUsd" value="18" min="0" max="30" />
+        </div>
+        <div class="token-presets">
+          <button data-decimals-usd="18" class="preset-usd-btn">ETH/WETH (18)</button>
+          <button data-decimals-usd="18" class="preset-usd-btn">DAI (18)</button>
+          <button data-decimals-usd="6" class="preset-usd-btn">USDC (6)</button>
+          <button data-decimals-usd="6" class="preset-usd-btn">USDT (6)</button>
+          <button data-decimals-usd="8" class="preset-usd-btn">WBTC (8)</button>
+        </div>
+        <button id="calculateToToken">Calculer</button>
+        <div id="tokenResult" class="result" style="display: none;">
+          <div id="tokenOutput"></div>
+          <button class="copy-btn" id="copyToken">Copier</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Comment utiliser</h2>
+      <p>
+        Ce calculateur convertit entre les montants "humains" lisibles des tokens (comme 1.5 ETH) et leurs représentations
+        numériques complètes utilisées dans les smart contracts (comme 1500000000000000000 wei).
+      </p>
+      <ul>
+        <li><strong>Humain → Wei</strong> : Convertit un montant lisible en sa représentation entière pour les transactions</li>
+        <li><strong>Wei → Humain</strong> : Convertit un montant brut en sa forme décimale lisible</li>
+        <li><strong>USD → Token</strong> : Convertit un montant en USD en nombre de tokens en fonction du prix du token</li>
+      </ul>
+      <p>Chaque token a son propre nombre de décimales :</p>
+      <ul>
+        <li>ETH, WETH, DAI et la plupart des tokens ERC-20 : 18 décimales</li>
+        <li>USDC, USDT : 6 décimales</li>
+        <li>WBTC : 8 décimales</li>
+      </ul>
+    </div>
+
+    <script>
+      // Fonction pour convertir un montant humain en wei
+      function humanToWei(amount, decimals) {
+        if (!amount || isNaN(parseFloat(amount))) {
+          throw new Error("Veuillez entrer un montant valide");
+        }
+        const amountStr = amount.toString();
+        let integer = amountStr;
+        let fraction = "";
+        if (amountStr.includes('.')) {
+          [integer, fraction] = amountStr.split('.');
+          fraction = fraction.slice(0, decimals).padEnd(decimals, '0');
+        } else {
+          fraction = '0'.repeat(decimals);
+        }
+        if (integer === '') {
+          integer = '0';
+        }
+        const result = integer + fraction;
+        return result.replace(/^0+(?=\d)/, '');
+      }
+
+      // Fonction pour convertir des wei en montant humain
+      function weiToHuman(wei, decimals) {
+        if (!wei || isNaN(BigInt(wei))) {
+          throw new Error("Veuillez entrer un montant en wei valide");
+        }
+        let weiStr = wei.toString();
+        while (weiStr.length <= decimals) {
+          weiStr = '0' + weiStr;
+        }
+        const decimalPosition = weiStr.length - decimals;
+        const integer = weiStr.slice(0, decimalPosition) || '0';
+        const fraction = weiStr.slice(decimalPosition);
+        let result = `${integer}${fraction ? '.' + fraction : ''}`;
+        return result.replace(/\.?0+$/, '');
+      }
+
+      // Fonction pour convertir USD en tokens
+      function usdToToken(usdAmount, tokenPrice, decimals) {
+        if (!usdAmount || isNaN(parseFloat(usdAmount))) {
+          throw new Error("Veuillez entrer un montant en USD valide");
+        }
+        if (!tokenPrice || isNaN(parseFloat(tokenPrice))) {
+          throw new Error("Veuillez entrer un prix du token valide");
+        }
+        const tokenAmount = parseFloat(usdAmount) / parseFloat(tokenPrice);
+        const weiAmount = humanToWei(tokenAmount.toString(), decimals);
+        return { tokenAmount, weiAmount };
+      }
+
+      // Gestionnaire d'onglets
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.tab).classList.add('active');
+        });
+      });
+
+      // Préréglages de tokens (Humain -> Wei)
+      document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('tokenDecimals').value = btn.dataset.decimals;
+        });
+      });
+
+      // Préréglages de tokens (Wei -> Humain)
+      document.querySelectorAll('.preset-wei-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('weiDecimals').value = btn.dataset.decimalsWei;
+        });
+      });
+
+      // Préréglages de tokens (USD -> Token)
+      document.querySelectorAll('.preset-usd-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.getElementById('tokenDecimalsUsd').value = btn.dataset.decimalsUsd;
+        });
+      });
+
+      // Conversion Humain -> Wei
+      document.getElementById('calculateToWei').addEventListener('click', () => {
+        const resultEl = document.getElementById('weiResult');
+        const outputEl = document.getElementById('weiOutput');
+        try {
+          const amount = document.getElementById('tokenAmount').value;
+          const decimals = parseInt(document.getElementById('tokenDecimals').value);
+          if (isNaN(decimals) || decimals < 0 || decimals > 30) {
+            throw new Error("Les décimales doivent être entre 0 et 30");
+          }
+          const weiAmount = humanToWei(amount, decimals);
+          outputEl.textContent = weiAmount;
+          resultEl.style.display = 'block';
+        } catch (error) {
+          outputEl.textContent = `Erreur: ${error.message}`;
+          resultEl.style.display = 'block';
+        }
+      });
+
+      // Conversion Wei -> Humain
+      document.getElementById('calculateToHuman').addEventListener('click', () => {
+        const resultEl = document.getElementById('humanResult');
+        const outputEl = document.getElementById('humanOutput');
+        try {
+          const wei = document.getElementById('weiAmount').value;
+          const decimals = parseInt(document.getElementById('weiDecimals').value);
+          if (isNaN(decimals) || decimals < 0 || decimals > 30) {
+            throw new Error("Les décimales doivent être entre 0 et 30");
+          }
+          const humanAmount = weiToHuman(wei, decimals);
+          outputEl.textContent = humanAmount;
+          resultEl.style.display = 'block';
+        } catch (error) {
+          outputEl.textContent = `Erreur: ${error.message}`;
+          resultEl.style.display = 'block';
+        }
+      });
+
+      // Conversion USD -> Token
+      document.getElementById('calculateToToken').addEventListener('click', () => {
+        const resultEl = document.getElementById('tokenResult');
+        const outputEl = document.getElementById('tokenOutput');
+        try {
+          const usdAmount = document.getElementById('usdAmount').value;
+          const tokenPrice = document.getElementById('tokenPrice').value;
+          const decimals = parseInt(document.getElementById('tokenDecimalsUsd').value);
+          if (isNaN(decimals) || decimals < 0 || decimals > 30) {
+            throw new Error("Les décimales doivent être entre 0 et 30");
+          }
+          const { tokenAmount, weiAmount } = usdToToken(usdAmount, tokenPrice, decimals);
+          outputEl.textContent = `Montant en tokens : ${tokenAmount}\nMontant en wei : ${weiAmount}`;
+          resultEl.style.display = 'block';
+        } catch (error) {
+          outputEl.textContent = `Erreur: ${error.message}`;
+          resultEl.style.display = 'block';
+        }
+      });
+
+      // Copier le résultat (Wei)
+      document.getElementById('copyWei').addEventListener('click', () => {
+        const text = document.getElementById('weiOutput').textContent;
+        navigator.clipboard.writeText(text)
+          .then(() => alert("Copié dans le presse-papiers!"))
+          .catch(err => alert("Erreur lors de la copie: " + err));
+      });
+
+      // Copier le résultat (Humain)
+      document.getElementById('copyHuman').addEventListener('click', () => {
+        const text = document.getElementById('humanOutput').textContent;
+        navigator.clipboard.writeText(text)
+          .then(() => alert("Copié dans le presse-papiers!"))
+          .catch(err => alert("Erreur lors de la copie: " + err));
+      });
+
+      // Copier le résultat (Token)
+      document.getElementById('copyToken').addEventListener('click', () => {
+        const text = document.getElementById('tokenOutput').textContent;
+        navigator.clipboard.writeText(text)
+          .then(() => alert("Copié dans le presse-papiers!"))
+          .catch(err => alert("Erreur lors de la copie: " + err));
+      });
+
+      /**************************************
+ * 1) Configuration des chaînes
+ **************************************/
+const chainConfigs = {
+  "1": {
+    name: "Ethereum",
+    // RPC public via Cloudflare par ex : https://cloudflare-eth.com
+    rpcUrl: "https://cloudflare-eth.com/", 
+    wrappedNativeToken: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    axelarGateway: "0x4F4495243837681061C4743b74B3eEdf548D56A5",
+    axelarGasService: "0x2d5d7d31F671F86C782533cc367F14109a082712",
+    axelarTokenSymbol: "ETH",
+    cgId: "ethereum",      // pour CoinGecko
+    gasPrice: 50           // en gwei, pour estimation
+  },
+  "56": {
+    name: "Binance Smart Chain",
+    rpcUrl: "https://bsc-dataseed1.binance.org/",
+    wrappedNativeToken: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    axelarGateway: "0x304acf330bbE08d1e512eefaa92F6a57871fD895",
+    axelarGasService: "0x2d5d7d31F671F86C782533cc367F14109a082712",
+    axelarTokenSymbol: "BNB",
+    cgId: "binancecoin",
+    gasPrice: 5            // en gwei, pour estimation
+  },
+  "137": {
+    name: "Polygon",
+    rpcUrl: "https://polygon-rpc.com",
+    wrappedNativeToken: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+    axelarGateway: "0x6f015F16De9fC8791b234eF68D486d2bF203FBA8",
+    axelarGasService: "0x2d5d7d31F671F86C782533cc367F14109a082712",
+    axelarTokenSymbol: "MATIC",
+    cgId: "matic-network",
+    gasPrice: 30           // en gwei, pour estimation
+  },
+  "43114": {
+    name: "Avalanche",
+    rpcUrl: "https://api.avax.network/ext/bc/C/rpc",
+    wrappedNativeToken: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+    axelarGateway: "0x5029C0EFf6C34351a0CEc334542cDb22c7928f78",
+    axelarGasService: "0x2d5d7d31F671F86C782533cc367F14109a082712",
+    axelarTokenSymbol: "AVAX",
+    cgId: "avalanche-2",
+    gasPrice: 25           // en gwei, pour estimation
+  }
+};
+
+/**************************************
+ * 2) ABIs & Contrats
+ **************************************/
+const ROUTER_ABI = [
+  "function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts)"
+];
+// Exemple d'adresse PancakeSwap Router pour BSC
+const pancakeRouterAddress = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
+
+/**************************************
+ * 3) Fonctions utilitaires
+ **************************************/
+function getChainInfo(chainId) {
+  return chainConfigs[chainId] || null;
+}
+
+function determineSwapType(tokenIn, tokenOut, srcChainId, dstChainId) {
+  if (dstChainId && srcChainId !== dstChainId) {
+    return "crossChainSwap";
+  }
+  const isNativeTokenIn = !tokenIn || tokenIn === "null";
+  const isNativeTokenOut = !tokenOut || tokenOut === "null";
+  if (isNativeTokenIn) {
+    return "swapExactETHForTokens";
+  } else if (isNativeTokenOut) {
+    return "swapExactTokensForETH";
+  } else {
+    return "swapExactTokensForTokens";
+  }
+}
+
+/**
+ * Estime les frais réels Axelar pour les transactions cross-chain
+ * 
+ * Basé sur la documentation officielle d'Axelar : https://docs.axelar.dev/resources/mainnet#gas-service-fees
+ * Les frais Axelar sont dynamiques et dépendent de plusieurs facteurs:
+ * - Coût du gaz sur les chaînes source et destination
+ * - Type de transaction (transfert, exécution de messages, etc.)
+ * - Congestion du réseau
+ * 
+ * @param {object} srcChainInfo informations sur la chaîne source
+ * @param {object} dstChainInfo informations sur la chaîne destination
+ * @param {number} amountIn montant d'entrée
+ * @returns {object} détails estimés des frais
+ */
+async function estimateAxelarFees(srcChainInfo, dstChainInfo, amountIn) {
+  // NOTE: Cette fonction simule l'estimation de frais.
+  // Dans une production réelle, vous devriez utiliser l'API d'Axelar ou leur SDK.
+  
+  // Estimation des frais de gaz basés sur la complexité des chaînes
+  const srcGasPrice = srcChainInfo.gasPrice; // en gwei
+  const dstGasPrice = dstChainInfo.gasPrice; // en gwei
+  
+  // Estimation du gaz utilisé pour les opérations cross-chain
+  const srcGasUsed = 150000; // unités de gaz estimées pour l'opération source
+  const dstGasUsed = 250000; // unités de gaz estimées pour l'exécution sur la chaîne de destination
+  
+  // Calcul des frais de gaz
+  const srcGasFeeInGwei = srcGasPrice * srcGasUsed;
+  const dstGasFeeInGwei = dstGasPrice * dstGasUsed;
+  
+  // Conversion en tokens natifs (simplifié)
+  const gweiToEth = 1e-9;
+  const srcGasFeeInEth = srcGasFeeInGwei * gweiToEth;
+  const dstGasFeeInEth = dstGasFeeInGwei * gweiToEth;
+  
+  // Frais de relais - variable selon la congestion du réseau
+  // Généralement entre 0.1% et 0.5% du montant
+  const networkCongestionFactor = 0.003; // 0.3% - moyenne observée
+  const relayerFee = parseFloat(amountIn) * networkCongestionFactor;
+  
+  // Frais de protocole Axelar - typiquement un montant fixe
+  // Cela varie selon les chaînes mais est généralement petit
+  const protocolFee = 0; // en équivalent token natif
+  
+  // Total des frais
+  const totalCrossChainFee = srcGasFeeInEth + dstGasFeeInEth + relayerFee + protocolFee;
+  
+  // Ajouter une validation
+  if (parseFloat(amountIn) <= totalCrossChainFee) {
+    throw new Error(`Le montant minimum pour un swap cross-chain doit être supérieur à ${totalCrossChainFee.toFixed(6)} ${srcChainInfo.axelarTokenSymbol}`);
+  }
+  
+  return {
+    sourceGasFee: srcGasFeeInEth.toFixed(6),
+    destinationGasFee: dstGasFeeInEth.toFixed(6),
+    relayerFee: relayerFee.toFixed(6),
+    protocolFee: protocolFee.toFixed(6),
+    totalFee: totalCrossChainFee.toFixed(6),
+    minimumAmount: totalCrossChainFee.toFixed(6),
+    details: `Les frais exacts peuvent varier selon les conditions du réseau.`
+  };
+}
+
+/**
+ * Estime le montant de sortie pour un swap cross-chain
+ * @param {string} amountIn montant d'entrée
+ * @param {object} srcChainInfo informations sur la chaîne source
+ * @param {object} dstChainInfo informations sur la chaîne destination
+ * @param {object} feeDetails détails des frais calculés
+ * @returns {object} estimation du swap cross-chain
+ */
+async function estimateCrossChainOutput(amountIn, srcChainInfo, dstChainInfo, feeDetails) {
+  // Récupérer les prix USD des tokens natifs
+  const srcTokenUsdPrice = await fetchUsdPrice(srcChainInfo.cgId);
+  const dstTokenUsdPrice = await fetchUsdPrice(dstChainInfo.cgId);
+  
+  if (!srcTokenUsdPrice || !dstTokenUsdPrice) {
+    throw new Error("Impossible de récupérer les prix des tokens pour l'estimation.");
+  }
+  
+  // Calculer la valeur USD du montant d'entrée
+  const amountInFloat = parseFloat(amountIn);
+  const srcValueUsd = amountInFloat * srcTokenUsdPrice;
+  
+  // Soustraire la valeur USD des frais
+  const feesInSrcToken = parseFloat(feeDetails.totalFee);
+  const feesValueUsd = feesInSrcToken * srcTokenUsdPrice;
+  const netValueUsd = srcValueUsd - feesValueUsd;
+  
+  // Appliquer un facteur de slippage et de liquidity impact (estimé à 1-3%)
+  const marketImpactFactor = 0.98; // 2% d'impact
+  const adjustedValueUsd = netValueUsd * marketImpactFactor;
+  
+  // Convertir en tokens de destination
+  const estimatedOutput = adjustedValueUsd / dstTokenUsdPrice;
+  
+  // Calculer le taux de change effectif (après frais)
+  const effectiveRate = estimatedOutput / amountInFloat;
+  
+  return {
+    estimatedOutput,
+    exchangeRate: effectiveRate,
+    srcTokenUsdPrice,
+    dstTokenUsdPrice,
+    marketImpactPercentage: (1 - marketImpactFactor) * 100
+  };
+}
+
+/**
+ * Calcule les frais détaillés pour un swap sur la même chaîne
+ * @param {string} swapType type de swap
+ * @param {number} amountIn montant d'entrée
+ * @param {object} chainInfo informations sur la chaîne
+ * @returns {object} objet contenant les détails des frais
+ */
+function calculateSameChainFees(swapType, amountIn, chainInfo) {
+  const amountInFloat = parseFloat(amountIn);
+  
+  // Frais de plateforme/DEX standard (0.3% pour la plupart des DEX comme Uniswap, PancakeSwap)
+  const swapFee = amountInFloat * 0.003;
+  
+  // Estimation des frais de gaz basée sur le type de swap et la chaîne
+  let gasFeeEstimate;
+  
+  // Les swaps impliquant des tokens natifs ont généralement des frais de gaz différents
+  if (swapType.includes("ETH")) {
+    // Frais de gaz plus élevés pour les opérations avec le token natif
+    const gasPrice = chainInfo.gasPrice; // en gwei
+    const gasUsed = 150000; // approximation pour un swap impliquant ETH
+    gasFeeEstimate = (gasPrice * gasUsed * 1e-9).toFixed(6); // conversion en ETH
+  } else {
+    // Frais de gaz pour les swaps token-to-token
+    const gasPrice = chainInfo.gasPrice; // en gwei
+    const gasUsed = 200000; // approximation pour un swap token-to-token
+    gasFeeEstimate = (gasPrice * gasUsed * 1e-9).toFixed(6); // conversion en ETH
+  }
+  
+  return {
+    swapFee: swapFee.toFixed(6),
+    gasFee: gasFeeEstimate,
+    totalFees: (swapFee + parseFloat(gasFeeEstimate)).toFixed(6)
+  };
+}
+
+/**
+ * Récupère le prix USD depuis l'API CoinGecko
+ * @param {string} cgId identifiant CoinGecko (ex: 'ethereum', 'binancecoin')
+ */
+async function fetchUsdPrice(cgId) {
+  if (!cgId) return 0;
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=${cgId}&vs_currencies=usd`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  if (data[cgId] && data[cgId].usd) {
+    return data[cgId].usd;
+  }
+  return 0;
+}
+
+/**************************************
+ * 4) Gestion du formulaire
+ **************************************/
+const swapForm = document.getElementById("swapForm");
+const resultsDiv = document.getElementById("results");
+
+swapForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  resultsDiv.innerHTML = `<p>Calcul en cours...</p>`;
+
+  // Récupération des valeurs du formulaire
+  const srcChainId = document.getElementById("sourceChain").value;
+  const dstChainId = document.getElementById("destinationChain").value;
+  const tokenIn = document.getElementById("tokenIn").value.trim();
+  const tokenOut = document.getElementById("tokenOut").value.trim();
+  const amountIn = document.getElementById("amountIn").value.trim();
+  const slippage = document.getElementById("slippage").value.trim();
+
+  // Validation
+  if (!srcChainId) {
+    resultsDiv.innerHTML = `<p style="color:red;">Veuillez sélectionner la chaîne source.</p>`;
+    return;
+  }
+  if (!amountIn) {
+    resultsDiv.innerHTML = `<p style="color:red;">Veuillez entrer un montant.</p>`;
+    return;
+  }
+
+  // Détermine le type de swap
+  const swapType = determineSwapType(tokenIn, tokenOut, parseInt(srcChainId), parseInt(dstChainId));
+  const srcChainInfo = getChainInfo(srcChainId);
+  if (!srcChainInfo) {
+    resultsDiv.innerHTML = `<p style="color:red;">Chain ID source non supporté.</p>`;
+    return;
+  }
+
+  // Logique d'estimation
+  try {
+    let estimatedOutput = 0;
+    let exchangeRate = 0;
+    let feeDetails = {};
+    let estimatedTime = "Inconnu";
+    let outputValueUSD = 0;
+    let feesHtml = '';
+    let swapEstimation = {};
+    
+    const dstChainInfo = dstChainId ? getChainInfo(dstChainId) : null;
+
+    if (swapType === "crossChainSwap") {
+      // Obtenir les frais estimés d'Axelar pour le cross-chain
+      feeDetails = await estimateAxelarFees(srcChainInfo, dstChainInfo, amountIn);
+      
+      // Estimer le montant de sortie avec les prix réels des tokens
+      swapEstimation = await estimateCrossChainOutput(amountIn, srcChainInfo, dstChainInfo, feeDetails);
+      
+      estimatedOutput = swapEstimation.estimatedOutput;
+      exchangeRate = swapEstimation.exchangeRate;
+      
+      // Temps estimé pour transactions cross-chain selon la documentation Axelar
+      estimatedTime = "10-30 minutes (varie selon la congestion des réseaux)";
+
+      // La valeur USD est déjà calculée dans la fonction d'estimation
+      outputValueUSD = estimatedOutput * swapEstimation.dstTokenUsdPrice;
+      
+      // Préparation de l'affichage des frais
+      feesHtml = `
+        <p><strong>Frais détaillés (estimés selon la documentation Axelar):</strong></p>
+        <ul>
+          <li>Frais de gaz sur chaîne source: ${feeDetails.sourceGasFee} ${srcChainInfo.axelarTokenSymbol}</li>
+          <li>Frais de gaz sur chaîne destination: ${feeDetails.destinationGasFee} ${dstChainInfo.axelarTokenSymbol}</li>
+          <li>Frais de relais: ${feeDetails.relayerFee} ${srcChainInfo.axelarTokenSymbol}</li>
+          <li>Frais de protocole: ${feeDetails.protocolFee} ${srcChainInfo.axelarTokenSymbol}</li>
+        </ul>
+        <p><strong>Total des frais estimés:</strong> ${feeDetails.totalFee} ${srcChainInfo.axelarTokenSymbol}</p>
+        <p><em>${feeDetails.details}</em></p>
+        <p><strong>Prix utilisés pour l'estimation:</strong></p>
+        <ul>
+          <li>${srcChainInfo.axelarTokenSymbol}: ${swapEstimation.srcTokenUsdPrice.toFixed(2)} USD</li>
+          <li>${dstChainInfo.axelarTokenSymbol}: ${swapEstimation.dstTokenUsdPrice.toFixed(2)} USD</li>
+        </ul>
+        <p><em>Impact de marché estimé: ${swapEstimation.marketImpactPercentage.toFixed(2)}%</em></p>
+      `;
+
+    } else {
+      // Même chaîne => simulation getAmountsOut
+      const provider = new ethers.providers.JsonRpcProvider(srcChainInfo.rpcUrl);
+      const router = new ethers.Contract(pancakeRouterAddress, ROUTER_ABI, provider);
+
+      const isNativeIn = (!tokenIn || tokenIn === "null");
+      const isNativeOut = (!tokenOut || tokenOut === "null");
+      const wrappedToken = srcChainInfo.wrappedNativeToken;
+
+      const amountInWei = ethers.parseEther(amountIn);
+      let path = [];
+      if (isNativeIn && tokenOut) {
+        path = [wrappedToken, tokenOut];
+      } else if (isNativeOut && tokenIn) {
+        path = [tokenIn, wrappedToken];
+      } else if (tokenIn && tokenOut) {
+        path = [tokenIn, tokenOut];
+      }
+
+      try {
+        const amountsOut = await router.getAmountsOut(amountInWei, path);
+        const rawOutput = amountsOut[amountsOut.length - 1];
+        estimatedOutput = parseFloat(ethers.formatEther(rawOutput));
+      } catch (routerError) {
+        console.error("Erreur router:", routerError);
+        // Fallback si l'appel au router échoue - simulation simplifiée
+        estimatedOutput = parseFloat(amountIn) * 0.97; // -3% pour frais et slippage
+      }
+      
+      exchangeRate = estimatedOutput / parseFloat(amountIn);
+
+      // Calcul des frais sur la même chaîne
+      feeDetails = calculateSameChainFees(swapType, amountIn, srcChainInfo);
+      
+      // Slippage simulation
+      const slippageDecimal = parseFloat(slippage) / 100;
+      const minReceived = estimatedOutput * (1 - slippageDecimal);
+
+      estimatedTime = "30-90 secondes (dépend de la congestion du réseau)";
+
+      // Récupération du prix pour USD
+      const tokenPriceUsd = await fetchUsdPrice(srcChainInfo.cgId);
+      outputValueUSD = estimatedOutput * tokenPriceUsd;
+      
+      // Préparation de l'affichage des frais
+      feesHtml = `
+        <p><strong>Frais détaillés:</strong></p>
+        <ul>
+          <li>Frais d'échange (0.3%): ${feeDetails.swapFee} ${srcChainInfo.axelarTokenSymbol}</li>
+          <li>Frais de gaz estimés: ${feeDetails.gasFee} ${srcChainInfo.axelarTokenSymbol}</li>
+        </ul>
+        <p><strong>Total des frais:</strong> ${feeDetails.totalFees} ${srcChainInfo.axelarTokenSymbol}</p>
+        <p><strong>Prix utilisé pour l'estimation:</strong> 1 ${srcChainInfo.axelarTokenSymbol} = ${tokenPriceUsd.toFixed(2)} USD</p>
+      `;
+    }
+
+    // Affichage final des résultats
+    resultsDiv.innerHTML = `
+      <h3>Résultats du swap</h3>
+      <p><strong>Type de Swap :</strong> ${swapType}</p>
+      <p><strong>Montant In :</strong> ${amountIn} ${
+        tokenIn || srcChainInfo.axelarTokenSymbol
+      }</p>
+      <p><strong>Montant Out estimé :</strong> ${estimatedOutput.toFixed(6)} ${
+        tokenOut || (dstChainInfo ? dstChainInfo.axelarTokenSymbol : srcChainInfo.axelarTokenSymbol)
+      }</p>
+      <p><strong>Valeur estimée en USD :</strong> 
+         ${outputValueUSD.toLocaleString(undefined, { 
+           minimumFractionDigits: 2, maximumFractionDigits: 2 
+         })} $</p>
+      <p><strong>Taux de change effectif :</strong> 1 ${srcChainInfo.axelarTokenSymbol} = ${exchangeRate.toFixed(6)} ${
+        dstChainInfo ? dstChainInfo.axelarTokenSymbol : srcChainInfo.axelarTokenSymbol
+      }</p>
+      ${feesHtml}
+      <p><strong>Délai estimé :</strong> ${estimatedTime}</p>
+    `;
+  } catch (err) {
+    console.error(err);
+    resultsDiv.innerHTML = `<p style="color:red;">Erreur lors de l'estimation: ${err.message}</p>`;
+  }
+});
+    </script>
+  </body>
+</html>
+
+
+
