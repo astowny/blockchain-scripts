@@ -1,0 +1,417 @@
+=== Cross-Chain Swap Log Started at 2025-02-28T21:37:17.058Z ===
+
+[2025-02-28T21:37:17.059Z] Logging to: /Users/bablesson/Documents/Tony/blockchain-scripts/logs/swap-2025-02-28T21-37-17-058Z.log
+[2025-02-28T21:37:17.116Z] Wallet initialized with address: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-02-28T21:37:17.151Z] SDK provider configured with account: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-02-28T21:37:17.151Z] Setting up swap from Polygon to BSC
+[2025-02-28T21:37:17.152Z] 
+Cross-Chain Swap Request:
+- From Chain: 137
+- To Chain: 56
+- From Token: 0x0000000000000000000000000000000000000000
+- To Token: 0x0000000000000000000000000000000000000000
+- Amount: 100000000000000000
+- Sender: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+- Max timeout: 30 minutes
+  
+[2025-02-28T21:37:17.152Z] Getting quote for cross-chain swap...
+[2025-02-28T21:37:20.616Z] 
+Quote received:
+- From: 100000000000000000 POL on 137
+- To: ~45611077798886 BNB on 56
+- Gas Cost: 18423269000000000 (in wei)
+- Execution Time: ~1218 seconds
+- Using: stargateV2
+    
+[2025-02-28T21:37:20.617Z] Converting quote to route...
+[2025-02-28T21:37:20.617Z] Executing cross-chain swap...
+[2025-02-28T21:37:20.871Z] 
+Execution update (0m 0s elapsed):
+- Status: STARTED
+- Type: CROSS_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+
+            
+[2025-02-28T21:37:21.213Z] 
+Execution update (0m 0s elapsed):
+- Status: ACTION_REQUIRED
+- Type: CROSS_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+
+            
+[2025-02-28T21:37:22.003Z] 
+Execution update (0m 1s elapsed):
+- Status: PENDING
+- Type: CROSS_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: 0x45cc83183b7d6f7b7be4474d2c3d0a5906bae37ad6ab065f5c526fe32454d73d
+- Chain: 137 -> 56
+
+            
+[2025-02-28T21:37:34.557Z] 
+Execution update (0m 13s elapsed):
+- Status: DONE
+- Type: CROSS_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: 0x45cc83183b7d6f7b7be4474d2c3d0a5906bae37ad6ab065f5c526fe32454d73d
+- Chain: 137 -> 56
+
+            
+[2025-02-28T21:37:34.560Z] 
+Execution update (0m 13s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:38:10.090Z] 
+Execution update (0m 49s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:38:42.667Z] 
+Execution update (1m 22s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:39:15.290Z] 
+Execution update (1m 54s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:39:48.673Z] 
+Execution update (2m 28s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:40:21.676Z] 
+Execution update (3m 1s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:40:55.715Z] 
+Execution update (3m 35s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:41:29.081Z] 
+Execution update (4m 8s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:42:01.278Z] 
+Execution update (4m 40s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:42:34.182Z] 
+Execution update (5m 13s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:43:06.038Z] 
+Execution update (5m 45s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:43:37.477Z] 
+Execution update (6m 16s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:44:09.716Z] 
+Execution update (6m 49s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:44:43.092Z] 
+Execution update (7m 22s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:45:14.862Z] 
+Execution update (7m 54s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:45:46.550Z] 
+Execution update (8m 25s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:46:18.092Z] 
+Execution update (8m 57s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:46:49.779Z] 
+Execution update (9m 29s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:47:21.277Z] 
+Execution update (10m 0s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:47:53.566Z] 
+Execution update (10m 32s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:48:25.221Z] 
+Execution update (11m 4s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:48:56.689Z] 
+Execution update (11m 36s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:49:28.618Z] 
+Execution update (12m 8s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:50:00.085Z] 
+Execution update (12m 39s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:50:31.451Z] 
+Execution update (13m 10s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:51:02.918Z] 
+Execution update (13m 42s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:51:35.771Z] 
+Execution update (14m 15s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:52:07.405Z] 
+Execution update (14m 46s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:52:39.162Z] 
+Execution update (15m 18s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:53:11.388Z] 
+Execution update (15m 50s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:53:42.866Z] 
+Execution update (16m 22s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:54:14.446Z] 
+Execution update (16m 53s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:54:47.611Z] 
+Execution update (17m 26s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:55:20.842Z] 
+Execution update (18m 0s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:55:52.340Z] 
+Execution update (18m 31s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:56:23.807Z] 
+Execution update (19m 3s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:56:55.178Z] 
+Execution update (19m 34s elapsed):
+- Status: PENDING
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: Not available yet
+- Chain: 137 -> 56
+⏳ Bridge confirmation is still pending. This process can take from 5-30 minutes depending on the bridge used.
+            
+[2025-02-28T21:57:23.115Z] 
+Execution update (20m 2s elapsed):
+- Status: DONE
+- Type: RECEIVING_CHAIN
+- Bridge: StargateV2 (Fast mode)
+- Transaction Hash: 0xc5f2d3119e9be3e486d727fa22eb541fca6edc76df246d871042a45e38de0f26
+- Chain: 137 -> 56
+
+            
+[2025-02-28T21:57:23.142Z] 
+🎉 Swap executed successfully!
+- Route ID: undefined
+- Status: undefined
+    
+[2025-02-28T21:57:23.144Z] 
+Step 1 completed:
+- Transaction: 0x45cc83183b7d6f7b7be4474d2c3d0a5906bae37ad6ab065f5c526fe32454d73d
+- Explorer: https://polygonscan.com/tx/0x45cc83183b7d6f7b7be4474d2c3d0a5906bae37ad6ab065f5c526fe32454d73d
+- Tool: stargateV2
+          
+[2025-02-28T21:57:23.145Z] Cross-chain swap completed successfully!
