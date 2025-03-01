@@ -1,4 +1,4 @@
-// swap.js
+// multi-chain-router.js
 import { createConfig, EVM, getQuote, convertQuoteToRoute, executeRoute, config } from '@lifi/sdk';
 import { ethers } from 'ethers';
 import { createWalletClient, http } from 'viem';
@@ -10,6 +10,58 @@ import * as path from 'path';
 
 // Load environment variables
 dotenv.config();
+
+// ABI for wrapped native tokens (WETH, WBNB, WMATIC, etc.)
+const WRAPPED_TOKEN_ABI = [
+  // Function to deposit (wrap) ETH
+  {
+    constant: false,
+    inputs: [],
+    name: 'deposit',
+    outputs: [],
+    payable: true,
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  // Function to withdraw (unwrap) ETH
+  {
+    constant: false,
+    inputs: [{ name: 'wad', type: 'uint256' }],
+    name: 'withdraw',
+    outputs: [],
+    payable: false,
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  // To check balance
+  {
+    constant: true,
+    inputs: [{ name: '', type: 'address' }],
+    name: 'balanceOf',
+    outputs: [{ name: '', type: 'uint256' }],
+    payable: false,
+    stateMutability: 'view',
+    type: 'function',
+  },
+];
+
+// Known wrapped native token addresses by chain ID
+const WRAPPED_NATIVE_TOKENS = {
+  1: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', // WETH on Ethereum
+  56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // WBNB on BSC
+  137: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270', // WMATIC on Polygon
+  42161: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1', // WETH on Arbitrum
+  10: '0x4200000000000000000000000000000000000006', // WETH on Optimism
+};
+
+// RPC endpoints for different chains
+const RPC_URLS = {
+  1: 'https://ethereum.publicnode.com',
+  56: 'https://bsc-dataseed.binance.org',
+  137: 'https://polygon-rpc.com',
+  42161: 'https://arb1.arbitrum.io/rpc',
+  10: 'https://mainnet.optimism.io',
+};
 
 // Setup file logging
 const setupLogging = () => {
@@ -24,7 +76,7 @@ const setupLogging = () => {
   const logFilePath = path.join(logsDir, `swap-${timestamp}.log`);
   
   // Initialize log file
-  fs.writeFileSync(logFilePath, `=== Cross-Chain Swap Log Started at ${new Date().toISOString()} ===\n\n`);
+  fs.writeFileSync(logFilePath, `=== Multi-Chain Swap Log Started at ${new Date().toISOString()} ===\n\n`);
   
   return {
     log: (message) => {
@@ -53,7 +105,7 @@ logger.log(`Logging to: ${logger.filePath}`);
 
 // Initialize the Li.Fi SDK
 createConfig({
-  integrator: 'CrossChainSwapExample',
+  integrator: 'MultiChainSwapRouter',
 });
 
 /**
@@ -85,10 +137,10 @@ const configureSDKProvider = (wallet) => {
   // Define chains we'll support
   const chains = [mainnet, arbitrum, optimism, polygon, bsc];
   
-  // Create a viem wallet client for polygon (to match our example)
+  // Create a viem wallet client for initial chain (using BSC since that's what's in your example)
   const client = createWalletClient({
     account,
-    chain: polygon,
+    chain: bsc,
     transport: http(),
   });
   
@@ -121,67 +173,202 @@ const configureSDKProvider = (wallet) => {
 };
 
 /**
- * Perform a cross-chain swap
- * @param {Object} params - The swap parameters
+ * Check if the operation is a wrap/unwrap on the same chain
  */
-const performCrossChainSwap = async ({
-  fromAddress,
-  fromChain,
-  toChain,
-  fromToken,
-  toToken,
-  fromAmount,
-  maxTimeoutMinutes = 30 // Default timeout of 30 minutes
-}) => {
+const isWrapUnwrapOnSameChain = (params) => {
+  const { fromChain, toChain, fromToken, toToken } = params;
+  
+  // Must be same chain
+  if (fromChain !== toChain) return false;
+  
+  // Get wrapped native token address for this chain
+  const wrappedNativeAddress = WRAPPED_NATIVE_TOKENS[fromChain];
+  if (!wrappedNativeAddress) return false;
+  
+  // Native token (0x00) to wrapped native token = Wrap operation
+  const isNativeToWrapped = 
+    fromToken === '0x0000000000000000000000000000000000000000' && 
+    toToken.toLowerCase() === wrappedNativeAddress.toLowerCase();
+    
+  // Wrapped native token to native token (0x00) = Unwrap operation
+  const isWrappedToNative = 
+    fromToken.toLowerCase() === wrappedNativeAddress.toLowerCase() && 
+    toToken === '0x0000000000000000000000000000000000000000';
+    
+  return isNativeToWrapped || isWrappedToNative;
+};
+
+/**
+ * Handle native token wrapping directly
+ */
+const handleDirectWrap = async (params, wallet) => {
+  const { fromChain, fromAmount } = params;
+  
+  // Get the wrapped token contract address
+  const wrappedTokenAddress = WRAPPED_NATIVE_TOKENS[fromChain];
+  logger.log(`Directly wrapping ${ethers.formatEther(fromAmount)} native tokens to ${wrappedTokenAddress}`);
+  
+  try {
+    // Get provider for this chain
+    const provider = new ethers.JsonRpcProvider(RPC_URLS[fromChain]);
+    const connectedWallet = wallet.connect(provider);
+    
+    // Create contract instance
+    const wrappedContract = new ethers.Contract(
+      wrappedTokenAddress, 
+      WRAPPED_TOKEN_ABI, 
+      connectedWallet
+    );
+    
+    // Execute wrap transaction
+    const tx = await wrappedContract.deposit({
+      value: fromAmount
+    });
+    
+    logger.log(`Wrap transaction sent: ${tx.hash}`);
+    
+    // Wait for confirmation
+    const receipt = await tx.wait();
+    
+    logger.log(`
+Wrap transaction confirmed!
+- Transaction Hash: ${receipt.hash}
+- Block Number: ${receipt.blockNumber}
+- Gas Used: ${receipt.gasUsed}
+    `);
+    
+    return {
+      success: true,
+      txHash: receipt.hash,
+      blockNumber: receipt.blockNumber
+    };
+  } catch (error) {
+    logger.error(`Failed to wrap native token: ${error.message}`);
+    throw error;
+  }
+};
+
+/**
+ * Handle wrapped token unwrapping directly
+ */
+const handleDirectUnwrap = async (params, wallet) => {
+  const { fromChain, fromAmount, fromToken } = params;
+  
+  // Get the wrapped token contract address
+  const wrappedTokenAddress = WRAPPED_NATIVE_TOKENS[fromChain];
+  logger.log(`Directly unwrapping ${ethers.formatEther(fromAmount)} ${fromToken} to native tokens`);
+  
+  try {
+    // Get provider for this chain
+    const provider = new ethers.JsonRpcProvider(RPC_URLS[fromChain]);
+    const connectedWallet = wallet.connect(provider);
+    
+    // Create contract instance
+    const wrappedContract = new ethers.Contract(
+      wrappedTokenAddress, 
+      WRAPPED_TOKEN_ABI, 
+      connectedWallet
+    );
+    
+    // Execute unwrap transaction
+    const tx = await wrappedContract.withdraw(fromAmount);
+    
+    logger.log(`Unwrap transaction sent: ${tx.hash}`);
+    
+    // Wait for confirmation
+    const receipt = await tx.wait();
+    
+    logger.log(`
+Unwrap transaction confirmed!
+- Transaction Hash: ${receipt.hash}
+- Block Number: ${receipt.blockNumber}
+- Gas Used: ${receipt.gasUsed}
+    `);
+    
+    return {
+      success: true,
+      txHash: receipt.hash,
+      blockNumber: receipt.blockNumber
+    };
+  } catch (error) {
+    logger.error(`Failed to unwrap token: ${error.message}`);
+    throw error;
+  }
+};
+
+/**
+ * Perform a cross-chain or same-chain swap with intelligent routing
+ */
+const performMultiChainSwap = async (params, options = {}) => {
+  // Default options
+  const maxTimeoutMinutes = options.maxTimeoutMinutes || 30;
+  
   // Validate parameters
-  if (!fromChain) throw new Error("fromChain is required");
-  if (!toChain) throw new Error("toChain is required");
-  if (!fromToken) throw new Error("fromToken is required");
-  if (!toToken) throw new Error("toToken is required");
-  if (!fromAmount) throw new Error("fromAmount is required");
-  if (!fromAddress) throw new Error("fromAddress is required");
+  if (!params.fromChain) throw new Error("fromChain is required");
+  if (!params.toChain) throw new Error("toChain is required");
+  if (!params.fromToken) throw new Error("fromToken is required");
+  if (!params.toToken) throw new Error("toToken is required");
+  if (!params.fromAmount) throw new Error("fromAmount is required");
+  if (!params.fromAddress) throw new Error("fromAddress is required");
   
   logger.log(`
-Cross-Chain Swap Request:
-- From Chain: ${fromChain}
-- To Chain: ${toChain}
-- From Token: ${fromToken}
-- To Token: ${toToken}
-- Amount: ${fromAmount}
-- Sender: ${fromAddress}
+Multi-Chain Swap Request:
+- From Chain: ${params.fromChain}
+- To Chain: ${params.toChain}
+- From Token: ${params.fromToken}
+- To Token: ${params.toToken}
+- Amount: ${params.fromAmount}
+- Sender: ${params.fromAddress}
 - Max timeout: ${maxTimeoutMinutes} minutes
   `);
   
   try {
-    logger.log('Getting quote for cross-chain swap...');
+    // Check if this is a wrap/unwrap on the same chain
+    if (isWrapUnwrapOnSameChain(params)) {
+      logger.log('Detected wrap/unwrap operation on the same chain - handling directly');
+      
+      const wallet = initializeWallet();
+      
+      // Is this wrapping or unwrapping?
+      const isWrapping = params.fromToken === '0x0000000000000000000000000000000000000000';
+      
+      if (isWrapping) {
+        return await handleDirectWrap(params, wallet);
+      } else {
+        return await handleDirectUnwrap(params, wallet);
+      }
+    }
+    
+    // Otherwise, proceed with Li.Fi for cross-chain or other swap types
+    logger.log('Proceeding with Li.Fi for cross-chain swap');
     
     // Get a quote for the swap
     const quote = await getQuote({
-      fromChain,
-      toChain,
-      fromToken,
-      toToken,
-      fromAmount,
-      fromAddress,
+      fromChain: params.fromChain,
+      toChain: params.toChain,
+      fromToken: params.fromToken,
+      toToken: params.toToken,
+      fromAmount: params.fromAmount,
+      fromAddress: params.fromAddress,
     });
     
     logger.log(`
 Quote received:
-- From: ${fromAmount} ${quote.action.fromToken.symbol} on ${quote.action.fromChainId}
+- From: ${params.fromAmount} ${quote.action.fromToken.symbol} on ${quote.action.fromChainId}
 - To: ~${quote.estimate.toAmount} ${quote.action.toToken.symbol} on ${quote.action.toChainId}
 - Gas Cost: ${quote.estimate.gasCosts.reduce((total, cost) => total + BigInt(cost.amount), 0n)} (in wei)
 - Execution Time: ~${quote.estimate.executionDuration} seconds
 - Using: ${quote.tool}
     `);
     
-    // Convert quote to route (necessary step for execution)
+    // Convert quote to route
     logger.log('Converting quote to route...');
     const route = convertQuoteToRoute(quote);
     
     // Execute the swap
     logger.log('Executing cross-chain swap...');
     
-    // Setup tracking variables for better logging and timeout handling
+    // Setup tracking variables
     let executionStartTime = Date.now();
     let lastStatusUpdate = {
       status: null,
@@ -192,18 +379,16 @@ Quote received:
     
     const timeoutMs = maxTimeoutMinutes * 60 * 1000;
     
-    // Create a promise that resolves/rejects based on completion or timeout
-    const executionPromise = executeRoute(route, {
-      // This gets called when the route object is updated during execution
+    // Execute the route with monitoring
+    const executedRoute = await executeRoute(route, {
       updateRouteHook(updatedRoute) {
         // Check if we've exceeded the timeout
         if (Date.now() - executionStartTime > timeoutMs) {
           logger.error(`
 ⚠️ Cross-chain swap has exceeded the maximum timeout of ${maxTimeoutMinutes} minutes.
 The transaction might still complete, but this script will exit.
-You can check the status of your transaction using a blockchain explorer.
-`);
-          process.exit(1); // Exit with error code
+          `);
+          process.exit(1);
         }
         
         // Get current step and process
@@ -247,6 +432,7 @@ ${latestProcess.status === 'PENDING' && latestProcess.type === 'RECEIVING_CHAIN'
           }
         }
       },
+      
       // This gets called when exchange rates change during execution
       acceptExchangeRateUpdateHook: async (toToken, oldToAmount, newToAmount) => {
         const oldAmount = ethers.formatUnits(oldToAmount, toToken.decimals);
@@ -272,43 +458,19 @@ Exchange rate updated:
       }
     });
     
-    // Wait for the execution to complete
-    const executedRoute = await executionPromise;
-    
     logger.log(`
 🎉 Swap executed successfully!
 - Route ID: ${executedRoute.routeId}
 - Status: ${executedRoute.status}
     `);
     
-    // Print details about completed transactions
-    executedRoute.steps.forEach((step, i) => {
-      if (step.execution?.status === 'DONE') {
-        const txProcess = step.execution.process.find(p => p.txHash);
-        if (txProcess) {
-          logger.log(`
-Step ${i+1} completed:
-- Transaction: ${txProcess.txHash}
-- Explorer: ${txProcess.txLink || 'Not available'}
-- Tool: ${step.tool}
-          `);
-        }
-      }
-    });
-    
     return executedRoute;
   } catch (error) {
-    logger.error('Error during cross-chain swap: ' + error.message);
+    logger.error(`Error during multi-chain swap: ${error.message}`);
     
-    // Provide more detail for common errors
-    if (error.message?.includes('slippage')) {
-      logger.error('💡 The swap failed due to high price impact or slippage. Try reducing the amount or setting a higher slippage tolerance.');
-    } else if (error.message?.includes('gas')) {
-      logger.error('💡 The transaction failed due to gas estimation or gas fees. Ensure you have enough native tokens to cover gas.');
-    } else if (error.message?.includes('user denied')) {
-      logger.error('💡 The transaction was rejected by the user.');
-    } else if (error.message?.includes('timeout')) {
-      logger.error('💡 The transaction timed out. Check the bridge\'s explorer to see if it completed later.');
+    // Provide more detailed error messages
+    if (error.message?.includes('Not an EVM Transaction')) {
+      logger.error('💡 This appears to be an issue with Li.Fi\'s wrapper bridge. The router should have handled this as a direct operation.');
     }
     
     throw error;
@@ -316,51 +478,41 @@ Step ${i+1} completed:
 };
 
 /**
- * Run the cross-chain swap example
+ * Run the BNB to WBNB example
  */
-const runExample = async () => {
+const runBnbToWbnbExample = async () => {
   try {
-    // Initialize wallet
+    // Initialize wallet and configure SDK
     const wallet = initializeWallet();
-    
-    // Configure SDK provider
     const { account } = configureSDKProvider(wallet);
     
-    // Example: Swap from Polygon (MATIC) to BSC (BNB)
-    const fromChainId = 137; // Polygon
-    const toChainId = 56;    // BSC
+    logger.log(`Setting up BNB to WBNB swap`);
     
-    logger.log(`Setting up swap from Polygon to BSC`);
-    
-    // Perform the cross-chain swap
-    await performCrossChainSwap({
+    // Perform the swap - will be handled directly
+    await performMultiChainSwap({
       fromAddress: account.address,
-      fromChain: fromChainId,
-      toChain: toChainId,
-      fromToken: '0x0000000000000000000000000000000000000000', // MATIC (native token)
-      toToken: '0x0000000000000000000000000000000000000000', // BNB (native token)
-      fromAmount: ethers.parseEther('0.1').toString(), // 0.1 MATIC (adjust as needed)
-      maxTimeoutMinutes: 30 // Set a 30-minute maximum timeout
+      fromChain: 56,    // BSC
+      toChain: 43114,      // BSC (same chain)
+      fromToken: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', // BNB (native token)
+      toToken: '0x408d4cd0adb7cebd1f1a1c33a0ba2098e1295bab', // WBNB
+      fromAmount: ethers.parseEther('0.01').toString(), // 0.01 BNB
     });
     
-    logger.log('Cross-chain swap completed successfully!');
+    logger.log('BNB to WBNB swap completed successfully!');
   } catch (error) {
-    logger.error('Failed to complete cross-chain swap: ' + error.message);
+    logger.error('Failed to complete BNB to WBNB swap: ' + error.message);
   }
 };
 
 // Run the example
-runExample();
+runBnbToWbnbExample();
 
 // Export functions for use in other scripts
 export {
   initializeWallet,
   configureSDKProvider,
-  performCrossChainSwap,
-  runExample
+  performMultiChainSwap,
+  runBnbToWbnbExample
 };
-
-
-
 
 

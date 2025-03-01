@@ -1,0 +1,73 @@
+=== Cross-Chain Swap Log Started at 2025-03-01T09:10:45.677Z ===
+
+[2025-03-01T09:10:45.678Z] Logging to: /Users/bablesson/Documents/Tony/blockchain-scripts/logs/swap-2025-03-01T09-10-45-677Z.log
+[2025-03-01T09:10:45.740Z] Wallet initialized with address: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-03-01T09:10:45.775Z] SDK provider configured with account: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-03-01T09:10:45.775Z] Setting up swap from Polygon to BSC
+[2025-03-01T09:10:45.776Z] 
+Cross-Chain Swap Request:
+- From Chain: 56
+- To Chain: 56
+- From Token: 0x0000000000000000000000000000000000000000
+- To Token: 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c
+- Amount: 1000000000000000
+- Sender: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+- Max timeout: 30 minutes
+  
+[2025-03-01T09:10:45.776Z] Getting quote for cross-chain swap...
+[2025-03-01T09:10:46.373Z] 
+Quote received:
+- From: 1000000000000000 BNB on 56
+- To: ~1000000000000000 WBNB on 56
+- Gas Cost: 193397600000000 (in wei)
+- Execution Time: ~0 seconds
+- Using: wrapper
+    
+[2025-03-01T09:10:46.373Z] Converting quote to route...
+[2025-03-01T09:10:46.374Z] Executing cross-chain swap...
+[2025-03-01T09:10:46.481Z] 
+Execution update (0m 0s elapsed):
+- Status: ACTION_REQUIRED
+- Type: SWITCH_CHAIN
+- Bridge: Wrapper
+- Transaction Hash: Not available yet
+- Chain: 56 -> 56
+
+            
+[2025-03-01T09:10:46.482Z] Switching chain to BNB Smart Chain (56)
+[2025-03-01T09:10:46.585Z] 
+Execution update (0m 0s elapsed):
+- Status: DONE
+- Type: SWITCH_CHAIN
+- Bridge: Wrapper
+- Transaction Hash: Not available yet
+- Chain: 56 -> 56
+
+            
+[2025-03-01T09:10:46.586Z] 
+Execution update (0m 0s elapsed):
+- Status: STARTED
+- Type: SWAP
+- Bridge: Wrapper
+- Transaction Hash: Not available yet
+- Chain: 56 -> 56
+
+            
+[2025-03-01T09:10:46.787Z] 
+Execution update (0m 0s elapsed):
+- Status: ACTION_REQUIRED
+- Type: SWAP
+- Bridge: Wrapper
+- Transaction Hash: Not available yet
+- Chain: 56 -> 56
+
+            
+[2025-03-01T09:10:47.248Z] 
+Execution update (0m 0s elapsed):
+- Status: PENDING
+- Type: SWAP
+- Bridge: Wrapper
+- Transaction Hash: 0x867ceb8b7840bcf591e4912fcd9b8a7f9dd866df4751b1ec456cc51e7fe6f369
+- Chain: 56 -> 56
+
+            

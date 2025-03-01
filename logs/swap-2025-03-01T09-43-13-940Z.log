@@ -1,0 +1,27 @@
+=== Multi-Chain Swap Log Started at 2025-03-01T09:43:13.940Z ===
+
+[2025-03-01T09:43:13.940Z] Logging to: /Users/bablesson/Documents/Tony/blockchain-scripts/logs/swap-2025-03-01T09-43-13-940Z.log
+[2025-03-01T09:43:14.000Z] Wallet initialized with address: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-03-01T09:43:14.036Z] SDK provider configured with account: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-03-01T09:43:14.036Z] Setting up BNB to WBNB swap
+[2025-03-01T09:43:14.037Z] 
+Multi-Chain Swap Request:
+- From Chain: 56
+- To Chain: 56
+- From Token: 0x0000000000000000000000000000000000000000
+- To Token: 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+- Amount: 10000000000000000
+- Sender: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+- Max timeout: 30 minutes
+  
+[2025-03-01T09:43:14.038Z] Detected wrap/unwrap operation on the same chain - handling directly
+[2025-03-01T09:43:14.048Z] Wallet initialized with address: 0x4cE8bEe6A8afC3debF669adC3b1727103cdBB649
+[2025-03-01T09:43:14.049Z] Directly wrapping 0.01 native tokens to 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c
+[2025-03-01T09:43:14.509Z] Wrap transaction sent: 0x82b969b2ff3ec12a7d8b0b103cb86e0676d9f6392620d03054386294d062b481
+[2025-03-01T09:43:18.676Z] 
+Wrap transaction confirmed!
+- Transaction Hash: 0x82b969b2ff3ec12a7d8b0b103cb86e0676d9f6392620d03054386294d062b481
+- Block Number: 47080207
+- Gas Used: 45038
+    
+[2025-03-01T09:43:18.677Z] BNB to WBNB swap completed successfully!
