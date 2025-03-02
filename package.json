@@ -1,8 +1,14 @@
 {
   "dependencies": {
     "@lifi/sdk": "^3.5.4",
+    "@xchainjs/xchain-client": "^1.0.10",
+    "@xchainjs/xchain-thorchain": "^2.0.14",
+    "@xchainjs/xchain-util": "^1.0.8",
+    "@xchainjs/xchain-wallet": "^1.1.6",
+    "axios": "^1.8.1",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5",
+    "node-cache": "^5.1.2",
     "viem": "^2.23.5"
   }
 }
