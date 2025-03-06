@@ -3,6 +3,8 @@ const { ethers } = require('ethers');
 const axios = require('axios');
 const NodeCache = require('node-cache');
 require('dotenv').config();
+const fs = require('fs'); 
+const path = require('path'); 
 
 // Configuration du système de logging
 let logLevel = process.env.LOG_LEVEL || 'info';
@@ -168,11 +170,22 @@ const mayaRateLimiter = new RateLimiter(10, 1000);
  */
 function log(level, message, data = {}) {
     if (LOG_LEVELS[level] >= LOG_LEVELS[logLevel]) {
-        const timestamp = new Date().toISOString();
-        console.log(`[${timestamp}] [${level.toUpperCase()}] ${message}`);
+        const timestamp = new Date().toISOString().replace('T', ' ').replace('Z', '');
+        const logMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+        console.log(logMessage);
         if (Object.keys(data).length > 0) {
             console.log(JSON.stringify(data, null, 2));
         }
+        // Définir le dossier de logs et créer le dossier s'il n'existe pas
+        const logsDir = path.join(__dirname, 'logs');
+        if (!fs.existsSync(logsDir)) {
+            fs.mkdirSync(logsDir, { recursive: true });
+        }
+        // Créer un fichier de log avec la date du jour
+        const dateStr = timestamp.split(' ')[0]; // Format YYYY-MM-DD
+        const logFilename = path.join(logsDir, `${dateStr}.log`);
+        const fileMessage = logMessage + (Object.keys(data).length > 0 ? "\n" + JSON.stringify(data, null, 2) : "") + "\n";
+        fs.appendFileSync(logFilename, fileMessage);
     }
 }
 
