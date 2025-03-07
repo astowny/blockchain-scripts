@@ -34,6 +34,16 @@ const PUBLIC_RPC_URLS = {
     ]
 };
 
+// Ajouter un objet pour les symboles natifs
+const NATIVE_SYMBOLS = {
+    1: 'ETH',
+    137: 'MATIC',
+    56: 'BNB',
+    42161: 'ETH',
+    10: 'ETH',
+    43114: 'AVAX'
+};
+
 // Ajout des adresses des tokens courants
 const COMMON_TOKENS = {
     1: [ // Ethereum
@@ -94,12 +104,26 @@ async function getWalletTokens(address, chainId = 1) {
         address,
         chainId,
         nativeBalance: '0',
+        nativeSymbol: NATIVE_SYMBOLS[chainId],
         tokens: []
     };
 
     try {
         const provider = await getWorkingProvider(chainId);
-        results.nativeBalance = (await provider.getBalance(address)).toString();
+        const nativeBalance = await provider.getBalance(address);
+        results.nativeBalance = nativeBalance.toString();
+        
+        if (nativeBalance > 0) {
+            results.tokens.push({
+                address: 'native',
+                symbol: NATIVE_SYMBOLS[chainId],
+                name: `${NATIVE_SYMBOLS[chainId]} (Native)`,
+                balance: nativeBalance.toString(),
+                decimals: 18,
+                formattedBalance: ethers.formatEther(nativeBalance),
+                isNative: true
+            });
+        }
 
         for (const tokenAddress of COMMON_TOKENS[chainId]) {
             try {
@@ -236,25 +260,26 @@ async function main() {
             path: walletInfo.path
         });
 
-        // Scanner plusieurs chaînes
+        let totalUsdEquivalent = 0;
         const chains = [1, 137, 56]; // Ethereum, Polygon, BSC
         
         for (const chainId of chains) {
-            console.log(`\nScanning chaîne ${chainId}...`);
+            console.log(`\nScanning chaîne ${chainId} (${NATIVE_SYMBOLS[chainId]})...`);
             const tokens = await getWalletTokens(walletInfo.address, chainId);
             
-            // Formater les résultats
             const formattedTokens = {
                 ...tokens,
                 nativeBalance: tokens.nativeBalance.toString(),
+                formattedNativeBalance: ethers.formatEther(tokens.nativeBalance),
                 tokens: tokens.tokens.map(token => ({
                     ...token,
                     balance: token.balance.toString(),
-                    formattedBalance: ethers.formatUnits(token.balance, token.decimals)
+                    formattedBalance: token.isNative 
+                        ? token.formattedBalance 
+                        : ethers.formatUnits(token.balance, token.decimals)
                 }))
             };
 
-            // Utiliser la fonction personnalisée pour la sérialisation
             console.log(serializeBigInt(formattedTokens));
         }
     } catch (error) {
