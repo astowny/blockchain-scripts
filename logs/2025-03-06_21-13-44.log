@@ -1,0 +1,939 @@
+=== Log started at 2025-03-06T21:13:44.631Z ===
+
+[2025-03-06 21:13:44.631] [INFO] Logging level set to DEBUG
+[2025-03-06 21:13:44.632] [INFO] Starting multi-chain liquidity scanner
+[2025-03-06 21:13:44.633] [DEBUG] Checking liquidity for token 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 (WETH) on chain 1
+[2025-03-06 21:13:44.754] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:44.855] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:44.940] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:45.319] [INFO] Found THORChain pool for ETH.ETH
+[2025-03-06 21:13:45.637] [DEBUG] Request failed. Retrying in 829ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:46.578] [DEBUG] Request failed. Retrying in 1847ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:48.532] [ERROR] Error checking Maya pool for ETH.ETH
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:48.532] [INFO] Results for Wrapped Ether:
+{
+  "token": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:13:44.633Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": false,
+        "dex": "uniswap",
+        "chainId": 1
+      },
+      "v3": {
+        "exists": false,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": []
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": false,
+        "dex": "sushiswap",
+        "chainId": 1
+      }
+    },
+    "thorchain": {
+      "exists": true,
+      "protocol": "thorchain",
+      "asset": "ETH.ETH",
+      "details": {
+        "status": "Available"
+      }
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "ETH.ETH",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:13:48.533] [DEBUG] Checking liquidity for token 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48 (USDC) on chain 1
+[2025-03-06 21:13:48.568] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:48.648] [INFO] Found uniswap V2 pool on chain 1 for 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:48.687] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:48.776] [INFO] Found sushiswap V2 pool on chain 1 for 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:48.830] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:49.046] [INFO] Found 4 uniswap V3 pools on chain 1 for 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:49.223] [INFO] Found THORChain pool for ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48
+[2025-03-06 21:13:49.332] [DEBUG] Request failed. Retrying in 996ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:50.437] [DEBUG] Request failed. Retrying in 1370ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:51.917] [ERROR] Error checking Maya pool for ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:51.917] [INFO] Results for USD Coin:
+{
+  "token": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:13:48.533Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "address": "0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc",
+        "tokens": {
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+            "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "reserve": "10378640365852"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "4708170144204631383551"
+          }
+        }
+      },
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": [
+          {
+            "address": "0xE0554a476A092703abdB3Ef35c80e0D76d32939F",
+            "fee": 100
+          },
+          {
+            "address": "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
+            "fee": 500
+          },
+          {
+            "address": "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8",
+            "fee": 3000
+          },
+          {
+            "address": "0x7BeA39867e4169DBe237d55C8242a8f2fcDcc387",
+            "fee": 10000
+          }
+        ]
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 1,
+        "address": "0x397FF1542f962076d0BFE58eA045FfA2d347ACa0",
+        "tokens": {
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+            "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "reserve": "1267802136148"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "575471095273314290917"
+          }
+        }
+      }
+    },
+    "thorchain": {
+      "exists": true,
+      "protocol": "thorchain",
+      "asset": "ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48",
+      "details": {
+        "status": "Available"
+      }
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:13:51.918] [DEBUG] Checking liquidity for token 0xdac17f958d2ee523a2206206994597c13d831ec7 (USDT) on chain 1
+[2025-03-06 21:13:51.951] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:52.036] [INFO] Found uniswap V2 pool on chain 1 for 0xdac17f958d2ee523a2206206994597c13d831ec7/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:52.074] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:52.156] [INFO] Found sushiswap V2 pool on chain 1 for 0xdac17f958d2ee523a2206206994597c13d831ec7/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:52.194] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:52.374] [INFO] Found 4 uniswap V3 pools on chain 1 for 0xdac17f958d2ee523a2206206994597c13d831ec7/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:52.540] [DEBUG] Request failed. Retrying in 644ms (attempt 1/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:13:53.350] [DEBUG] Request failed. Retrying in 1332ms (attempt 2/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:13:54.834] [ERROR] Error checking THORChain pool for ETH.0XDAC17F958D2EE523A2206206994597C13D831EC7
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:13:54.942] [DEBUG] Request failed. Retrying in 882ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:55.935] [DEBUG] Request failed. Retrying in 1387ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:57.431] [ERROR] Error checking Maya pool for ETH.0XDAC17F958D2EE523A2206206994597C13D831EC7
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:13:57.431] [INFO] Results for Tether USD:
+{
+  "token": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:13:51.918Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "address": "0x0d4a11d5EEaaC28EC3F61d100daF4d40471f1852",
+        "tokens": {
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "4629698267850706466511"
+          },
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+            "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "reserve": "10207952447474"
+          }
+        }
+      },
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": [
+          {
+            "address": "0xc7bBeC68d12a0d1830360F8Ec58fA599bA1b0e9b",
+            "fee": 100
+          },
+          {
+            "address": "0x11b815efB8f581194ae79006d24E0d814B7697F6",
+            "fee": 500
+          },
+          {
+            "address": "0x4e68Ccd3E89f51C3074ca5072bbAC773960dFa36",
+            "fee": 3000
+          },
+          {
+            "address": "0xC5aF84701f98Fa483eCe78aF83F11b6C38ACA71D",
+            "fee": 10000
+          }
+        ]
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 1,
+        "address": "0x06da0fd433C1A5d7a4faa01111c044910A184553",
+        "tokens": {
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "359643279487893123183"
+          },
+          "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+            "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+            "reserve": "792878145613"
+          }
+        }
+      }
+    },
+    "thorchain": {
+      "exists": false,
+      "protocol": "thorchain",
+      "asset": "ETH.0XDAC17F958D2EE523A2206206994597C13D831EC7",
+      "error": "Request failed with status code 400"
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "ETH.0XDAC17F958D2EE523A2206206994597C13D831EC7",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:13:57.431] [DEBUG] Checking liquidity for token 0x6b175474e89094c44da98b954eedeac495271d0f (DAI) on chain 1
+[2025-03-06 21:13:57.465] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:57.556] [INFO] Found uniswap V2 pool on chain 1 for 0x6b175474e89094c44da98b954eedeac495271d0f/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:57.590] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:57.662] [INFO] Found sushiswap V2 pool on chain 1 for 0x6b175474e89094c44da98b954eedeac495271d0f/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:57.698] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:13:57.853] [INFO] Found 4 uniswap V3 pools on chain 1 for 0x6b175474e89094c44da98b954eedeac495271d0f/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:13:58.212] [DEBUG] Request failed. Retrying in 975ms (attempt 1/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:13:59.339] [DEBUG] Request failed. Retrying in 1665ms (attempt 2/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:01.155] [ERROR] Error checking THORChain pool for ETH.0X6B175474E89094C44DA98B954EEDEAC495271D0F
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:01.262] [DEBUG] Request failed. Retrying in 943ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:02.312] [DEBUG] Request failed. Retrying in 1809ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:04.235] [ERROR] Error checking Maya pool for ETH.0X6B175474E89094C44DA98B954EEDEAC495271D0F
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:04.235] [INFO] Results for Dai Stablecoin:
+{
+  "token": "0x6b175474e89094c44da98b954eedeac495271d0f",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:13:57.431Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "address": "0xA478c2975Ab1Ea89e8196811F51A7B7Ade33eB11",
+        "tokens": {
+          "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+            "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "reserve": "5233503069000554048140583"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "2374424128879764246362"
+          }
+        }
+      },
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": [
+          {
+            "address": "0xD8dEC118e1215F02e10DB846DCbBfE27d477aC19",
+            "fee": 100
+          },
+          {
+            "address": "0x60594a405d53811d3BC4766596EFD80fd545A270",
+            "fee": 500
+          },
+          {
+            "address": "0xC2e9F25Be6257c210d7Adf0D4Cd6E3E881ba25f8",
+            "fee": 3000
+          },
+          {
+            "address": "0xa80964C5bBd1A0E95777094420555fead1A26c1e",
+            "fee": 10000
+          }
+        ]
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 1,
+        "address": "0xC3D03e4F041Fd4cD388c549Ee2A29a9E5075882f",
+        "tokens": {
+          "0x6B175474E89094C44Da98b954EedeAC495271d0F": {
+            "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+            "reserve": "4225794284467124519594303"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "1917229759915923722603"
+          }
+        }
+      }
+    },
+    "thorchain": {
+      "exists": false,
+      "protocol": "thorchain",
+      "asset": "ETH.0X6B175474E89094C44DA98B954EEDEAC495271D0F",
+      "error": "Request failed with status code 400"
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "ETH.0X6B175474E89094C44DA98B954EEDEAC495271D0F",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:14:04.236] [DEBUG] Checking liquidity for token 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599 on chain 1
+[2025-03-06 21:14:04.283] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:04.362] [INFO] Found uniswap V2 pool on chain 1 for 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:14:04.400] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:04.476] [INFO] Found sushiswap V2 pool on chain 1 for 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:14:04.509] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:04.675] [INFO] Found 4 uniswap V3 pools on chain 1 for 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:14:04.845] [INFO] Found THORChain pool for BTC.BTC
+[2025-03-06 21:14:04.954] [DEBUG] Request failed. Retrying in 831ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:05.895] [DEBUG] Request failed. Retrying in 1491ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:07.496] [ERROR] Error checking Maya pool for BTC.BTC
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:07.496] [INFO] Results for Wrapped BTC:
+{
+  "token": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:14:04.236Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "address": "0xBb2b8038a1640196FbE3e38816F3e67Cba72D940",
+        "tokens": {
+          "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
+            "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "reserve": "6483952218"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "2612719579214422798964"
+          }
+        }
+      },
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": [
+          {
+            "address": "0xe6ff8b9A37B0fab776134636D9981Aa778c4e718",
+            "fee": 100
+          },
+          {
+            "address": "0x4585FE77225b41b697C938B018E2Ac67Ac5a20c0",
+            "fee": 500
+          },
+          {
+            "address": "0xCBCdF9626bC03E24f779434178A73a0B4bad62eD",
+            "fee": 3000
+          },
+          {
+            "address": "0x6Ab3bba2F41e7eAA262fa5A1A9b3932fA161526F",
+            "fee": 10000
+          }
+        ]
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 1,
+        "address": "0xCEfF51756c56CeFFCA006cD410B03FFC46dd3a58",
+        "tokens": {
+          "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599": {
+            "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+            "reserve": "13685270000"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "5514503482818261905865"
+          }
+        }
+      }
+    },
+    "thorchain": {
+      "exists": true,
+      "protocol": "thorchain",
+      "asset": "BTC.BTC",
+      "details": {
+        "status": "Available"
+      }
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "BTC.BTC",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:14:07.497] [DEBUG] Checking liquidity for token 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984 on chain 1
+[2025-03-06 21:14:07.535] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:07.611] [INFO] Found uniswap V2 pool on chain 1 for 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:14:07.646] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:07.718] [INFO] Found sushiswap V2 pool on chain 1 for 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:14:07.757] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:07.919] [INFO] Found 3 uniswap V3 pools on chain 1 for 0x1f9840a85d5af5bf1d1762f925bdaddc4201f984/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+[2025-03-06 21:14:08.091] [DEBUG] Request failed. Retrying in 691ms (attempt 1/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:08.945] [DEBUG] Request failed. Retrying in 1667ms (attempt 2/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:10.763] [ERROR] Error checking THORChain pool for ETH.0X1F9840A85D5AF5BF1D1762F925BDADDC4201F984
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:10.870] [DEBUG] Request failed. Retrying in 878ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:11.855] [DEBUG] Request failed. Retrying in 1622ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:13.585] [ERROR] Error checking Maya pool for ETH.0X1F9840A85D5AF5BF1D1762F925BDADDC4201F984
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:13.585] [INFO] Results for Uniswap:
+{
+  "token": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:14:07.497Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "address": "0xd3d2E2692501A5c9Ca623199D38826e513033a17",
+        "tokens": {
+          "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
+            "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+            "reserve": "263374667970739183985184"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "856795197192171216827"
+          }
+        }
+      },
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": [
+          {
+            "address": "0xfaA318479b7755b2dBfDD34dC306cb28B420Ad12",
+            "fee": 500
+          },
+          {
+            "address": "0x1d42064Fc4Beb5F8aAF85F4617AE8b3b5B8Bd801",
+            "fee": 3000
+          },
+          {
+            "address": "0x360b9726186C0F62cc719450685ce70280774Dc8",
+            "fee": 10000
+          }
+        ]
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 1,
+        "address": "0xDafd66636E2561b0284EDdE37e42d192F2844D40",
+        "tokens": {
+          "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984": {
+            "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+            "reserve": "15542427496618186830890"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "reserve": "50641831283063421695"
+          }
+        }
+      }
+    },
+    "thorchain": {
+      "exists": false,
+      "protocol": "thorchain",
+      "asset": "ETH.0X1F9840A85D5AF5BF1D1762F925BDADDC4201F984",
+      "error": "Request failed with status code 400"
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "ETH.0X1F9840A85D5AF5BF1D1762F925BDADDC4201F984",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:14:13.585] [DEBUG] Checking liquidity for token 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 on chain 137
+[2025-03-06 21:14:13.617] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:13.620] [ERROR] Error checking quickswap V2 pool on chain 137
+{
+  "error": "bad address checksum (argument=\"address\", value=\"0x5757371414417b8C6CAad45bAeF941aBc7A6Ed7d\", code=INVALID_ARGUMENT, version=6.13.5)"
+}
+[2025-03-06 21:14:13.637] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:13.686] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:13.864] [INFO] Results for Wrapped Matic:
+{
+  "token": "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+  "chainId": 137,
+  "chainName": "POLYGON",
+  "timestamp": "2025-03-06T21:14:13.585Z",
+  "protocols": {
+    "quickswap": {
+      "v2": {
+        "exists": false,
+        "dex": "quickswap",
+        "chainId": 137,
+        "error": "bad address checksum (argument=\"address\", value=\"0x5757371414417b8C6CAad45bAeF941aBc7A6Ed7d\", code=INVALID_ARGUMENT, version=6.13.5)"
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": false,
+        "dex": "sushiswap",
+        "chainId": 137
+      }
+    },
+    "uniswap": {
+      "v3": {
+        "exists": false,
+        "dex": "uniswap",
+        "chainId": 137,
+        "pools": []
+      }
+    }
+  }
+}
+[2025-03-06 21:14:13.864] [DEBUG] Checking liquidity for token 0x2791bca1f2de4661ed88a30c99a7a9449aa84174 on chain 137
+[2025-03-06 21:14:13.883] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:13.885] [ERROR] Error checking quickswap V2 pool on chain 137
+{
+  "error": "bad address checksum (argument=\"address\", value=\"0x5757371414417b8C6CAad45bAeF941aBc7A6Ed7d\", code=INVALID_ARGUMENT, version=6.13.5)"
+}
+[2025-03-06 21:14:13.906] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:13.959] [INFO] Found sushiswap V2 pool on chain 137 for 0x2791bca1f2de4661ed88a30c99a7a9449aa84174/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
+[2025-03-06 21:14:13.981] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:14.372] [INFO] Found 4 uniswap V3 pools on chain 137 for 0x2791bca1f2de4661ed88a30c99a7a9449aa84174/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
+[2025-03-06 21:14:14.372] [INFO] Results for USD Coin (PoS):
+{
+  "token": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+  "chainId": 137,
+  "chainName": "POLYGON",
+  "timestamp": "2025-03-06T21:14:13.864Z",
+  "protocols": {
+    "quickswap": {
+      "v2": {
+        "exists": false,
+        "dex": "quickswap",
+        "chainId": 137,
+        "error": "bad address checksum (argument=\"address\", value=\"0x5757371414417b8C6CAad45bAeF941aBc7A6Ed7d\", code=INVALID_ARGUMENT, version=6.13.5)"
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 137,
+        "address": "0xcd353F79d9FADe311fC3119B841e1f456b54e858",
+        "tokens": {
+          "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270": {
+            "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+            "reserve": "268614833137244179194624"
+          },
+          "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174": {
+            "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+            "reserve": "67015952115"
+          }
+        }
+      }
+    },
+    "uniswap": {
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 137,
+        "pools": [
+          {
+            "address": "0x0a6c4588b7D8Bd22cF120283B1FFf953420c45F3",
+            "fee": 100
+          },
+          {
+            "address": "0xA374094527e1673A86dE625aa59517c5dE346d32",
+            "fee": 500
+          },
+          {
+            "address": "0x88f3C15523544835fF6c738DDb30995339AD57d6",
+            "fee": 3000
+          },
+          {
+            "address": "0x67e708986a809aCefDe16f2417FA5701241E3935",
+            "fee": 10000
+          }
+        ]
+      }
+    }
+  }
+}
+[2025-03-06 21:14:14.373] [DEBUG] Checking liquidity for token 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619 on chain 137
+[2025-03-06 21:14:14.395] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:14.397] [ERROR] Error checking quickswap V2 pool on chain 137
+{
+  "error": "bad address checksum (argument=\"address\", value=\"0x5757371414417b8C6CAad45bAeF941aBc7A6Ed7d\", code=INVALID_ARGUMENT, version=6.13.5)"
+}
+[2025-03-06 21:14:14.415] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:14.492] [INFO] Found sushiswap V2 pool on chain 137 for 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
+[2025-03-06 21:14:14.524] [DEBUG] Using RPC https://polygon-rpc.com for chain 137
+[2025-03-06 21:14:14.883] [INFO] Found 4 uniswap V3 pools on chain 137 for 0x7ceb23fd6bc0add59e62ac25578270cff1b9f619/0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270
+[2025-03-06 21:14:14.883] [INFO] Results for Wrapped Ether:
+{
+  "token": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+  "chainId": 137,
+  "chainName": "POLYGON",
+  "timestamp": "2025-03-06T21:14:14.373Z",
+  "protocols": {
+    "quickswap": {
+      "v2": {
+        "exists": false,
+        "dex": "quickswap",
+        "chainId": 137,
+        "error": "bad address checksum (argument=\"address\", value=\"0x5757371414417b8C6CAad45bAeF941aBc7A6Ed7d\", code=INVALID_ARGUMENT, version=6.13.5)"
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": true,
+        "dex": "sushiswap",
+        "chainId": 137,
+        "address": "0xc4e595acDD7d12feC385E5dA5D43160e8A0bAC0E",
+        "tokens": {
+          "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270": {
+            "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
+            "reserve": "3498528823727843849769111"
+          },
+          "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619": {
+            "address": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+            "reserve": "394908647807034007954"
+          }
+        }
+      }
+    },
+    "uniswap": {
+      "v3": {
+        "exists": true,
+        "dex": "uniswap",
+        "chainId": 137,
+        "pools": [
+          {
+            "address": "0x33C4F0043E2e988b3c2e9C77e2C670eFe709Bfe3",
+            "fee": 100
+          },
+          {
+            "address": "0x86f1d8390222A3691C28938eC7404A1661E618e0",
+            "fee": 500
+          },
+          {
+            "address": "0x167384319B41F7094e62f7506409Eb38079AbfF8",
+            "fee": 3000
+          },
+          {
+            "address": "0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480",
+            "fee": 10000
+          }
+        ]
+      }
+    }
+  }
+}
+[2025-03-06 21:14:14.883] [DEBUG] Checking liquidity for token BTC on chain unknown
+[2025-03-06 21:14:14.990] [DEBUG] Request failed. Retrying in 781ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:15.880] [DEBUG] Request failed. Retrying in 1584ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:17.572] [ERROR] Error checking Maya pool for BTC.BTC
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:17.572] [INFO] Results for Bitcoin:
+{
+  "token": "BTC",
+  "chainId": 0,
+  "chainName": "BITCOIN",
+  "timestamp": "2025-03-06T21:14:14.883Z",
+  "protocols": {
+    "thorchain": {
+      "exists": true,
+      "protocol": "thorchain",
+      "asset": "BTC.BTC",
+      "details": {
+        "status": "Available"
+      }
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "BTC.BTC",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:14:17.572] [DEBUG] Checking liquidity for token ETH on chain 1
+[2025-03-06 21:14:17.611] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:18.391] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:18.617] [DEBUG] Using RPC https://eth-mainnet.public.blastapi.io for chain 1
+[2025-03-06 21:14:20.013] [DEBUG] Request failed. Retrying in 535ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:20.658] [DEBUG] Request failed. Retrying in 1251ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:22.018] [ERROR] Error checking Maya pool for ETH.ETH
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:22.019] [INFO] Results for Ethereum:
+{
+  "token": "ETH",
+  "chainId": 1,
+  "chainName": "ETHEREUM",
+  "timestamp": "2025-03-06T21:14:17.572Z",
+  "protocols": {
+    "uniswap": {
+      "v2": {
+        "exists": false,
+        "dex": "uniswap",
+        "chainId": 1
+      },
+      "v3": {
+        "exists": false,
+        "dex": "uniswap",
+        "chainId": 1,
+        "pools": []
+      }
+    },
+    "sushiswap": {
+      "v2": {
+        "exists": false,
+        "dex": "sushiswap",
+        "chainId": 1
+      }
+    },
+    "thorchain": {
+      "exists": true,
+      "protocol": "thorchain",
+      "asset": "ETH.ETH",
+      "details": {
+        "status": "Available"
+      }
+    },
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "ETH.ETH",
+      "error": "Request failed with status code 501"
+    }
+  }
+}
+[2025-03-06 21:14:22.020] [DEBUG] Checking liquidity for token BNB on chain 56
+[2025-03-06 21:14:22.021] [WARN] Error formatting THORChain asset for BNB on chain 56
+[2025-03-06 21:14:22.021] [WARN] Error formatting Maya asset for BNB on chain 56
+[2025-03-06 21:14:22.021] [INFO] Results for Binance Coin:
+{
+  "token": "BNB",
+  "chainId": 56,
+  "chainName": "BINANCE_SMART_CHAIN",
+  "timestamp": "2025-03-06T21:14:22.020Z",
+  "protocols": {}
+}
+[2025-03-06 21:14:22.022] [DEBUG] Checking liquidity for token rune on chain thor
+[2025-03-06 21:14:22.186] [DEBUG] Request failed. Retrying in 741ms (attempt 1/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:23.086] [DEBUG] Request failed. Retrying in 1145ms (attempt 2/3)
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:24.386] [ERROR] Error checking THORChain pool for THOR.RUNE
+{
+  "error": "Request failed with status code 400"
+}
+[2025-03-06 21:14:24.386] [INFO] Results for RUNE:
+{
+  "token": "rune",
+  "chainId": "thor",
+  "chainName": "THORCHAIN",
+  "timestamp": "2025-03-06T21:14:22.022Z",
+  "protocols": {
+    "thorchain": {
+      "exists": false,
+      "protocol": "thorchain",
+      "asset": "THOR.RUNE",
+      "error": "Request failed with status code 400"
+    }
+  }
+}
+[2025-03-06 21:14:24.386] [DEBUG] Checking liquidity for token cacao on chain maya
+[2025-03-06 21:14:24.491] [DEBUG] Request failed. Retrying in 503ms (attempt 1/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:25.100] [DEBUG] Request failed. Retrying in 1118ms (attempt 2/3)
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:26.326] [ERROR] Error checking Maya pool for MAYA.CACAO
+{
+  "error": "Request failed with status code 501"
+}
+[2025-03-06 21:14:26.326] [INFO] Results for CACAO:
+{
+  "token": "cacao",
+  "chainId": "maya",
+  "chainName": "MAYACHAIN",
+  "timestamp": "2025-03-06T21:14:24.386Z",
+  "protocols": {
+    "maya": {
+      "exists": false,
+      "protocol": "maya",
+      "asset": "MAYA.CACAO",
+      "error": "Request failed with status code 501"
+    }
+  }
+}

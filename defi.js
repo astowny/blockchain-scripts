@@ -176,16 +176,32 @@ function log(level, message, data = {}) {
         if (Object.keys(data).length > 0) {
             console.log(JSON.stringify(data, null, 2));
         }
+
         // Définir le dossier de logs et créer le dossier s'il n'existe pas
         const logsDir = path.join(__dirname, 'logs');
         if (!fs.existsSync(logsDir)) {
             fs.mkdirSync(logsDir, { recursive: true });
         }
-        // Créer un fichier de log avec la date du jour
-        const dateStr = timestamp.split(' ')[0]; // Format YYYY-MM-DD
-        const logFilename = path.join(logsDir, `${dateStr}.log`);
-        const fileMessage = logMessage + (Object.keys(data).length > 0 ? "\n" + JSON.stringify(data, null, 2) : "") + "\n";
-        fs.appendFileSync(logFilename, fileMessage);
+        
+        // Créer un fichier de log unique par exécution
+        // Utiliser une variable statique pour stocker le nom du fichier
+        if (!log.currentLogFile) {
+            const now = new Date();
+            const dateStr = now.toISOString()
+                .replace('T', '_')
+                .replace(/:/g, '-')
+                .split('.')[0]; // Format: YYYY-MM-DD_HH-mm-ss
+            log.currentLogFile = path.join(logsDir, `${dateStr}.log`);
+            
+            // Ajouter un en-tête au fichier lors de sa création
+            fs.writeFileSync(log.currentLogFile, `=== Log started at ${now.toISOString()} ===\n\n`);
+        }
+        
+        // Ajouter le message au fichier existant
+        const fileMessage = logMessage + 
+            (Object.keys(data).length > 0 ? "\n" + JSON.stringify(data, null, 2) : "") + 
+            "\n";
+        fs.appendFileSync(log.currentLogFile, fileMessage);
     }
 }
 
@@ -256,7 +272,7 @@ function formatAsset(token, chainId) {
             return `ETH.${token.toUpperCase()}`;
         }
     } else if (chainId === 56) {
-        if (token.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c') {
+        if (token.toLowerCase() === '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c' || token.toLowerCase() === 'bnb') {
             return 'BNB.BNB'; // WBNB -> BNB
         } else if (token.startsWith('0x')) {
             return `BNB.${token.toUpperCase()}`;
@@ -391,8 +407,11 @@ async function checkThorchainPool(asset) {
     try {
         await thorchainRateLimiter.throttle();
         
+        const url = `${THORCHAIN_API}/pool/${asset}`;
+        log('debug', `Requesting THORChain pool data from ${url}`);
+        
         const response = await withRetry(
-            () => axios.get(`${THORCHAIN_API}/pool/${asset}`, {
+            () => axios.get(url, {
                 timeout: 5000
             })
         );
@@ -419,7 +438,8 @@ async function checkThorchainPool(asset) {
         }
         
         log('error', `Error checking THORChain pool for ${asset}`, {
-            error: error.message
+            error: error.message,
+            url: `${THORCHAIN_API}/pool/${asset}`
         });
         return { exists: false, protocol: 'thorchain', asset, error: error.message };
     }
@@ -436,8 +456,11 @@ async function checkMayaPool(asset) {
     try {
         await mayaRateLimiter.throttle();
         
+        const url = `${MAYA_NODE_API}/pools/${asset}`;
+        log('debug', `Requesting Maya pool data from ${url}`);
+        
         const response = await withRetry(
-            () => axios.get(`${MAYA_NODE_API}/pools/${asset}`, {
+            () => axios.get(url, {
                 timeout: 5000
             })
         );
@@ -463,7 +486,8 @@ async function checkMayaPool(asset) {
         }
         
         log('error', `Error checking Maya pool for ${asset}`, {
-            error: error.message
+            error: error.message,
+            url: `${MAYA_NODE_API}/pools/${asset}`
         });
         return { exists: false, protocol: 'maya', asset, error: error.message };
     }
@@ -640,9 +664,9 @@ async function main() {
     for (const tokenInfo of ALL_TOKENS) {
         try {
             const result = await checkTokenLiquidity(tokenInfo.token, tokenInfo.chainId);
-            log('info', `Results for ${tokenInfo.name}:`, result);
+            log('info', `Results for ${tokenInfo.name} (${tokenInfo.token}):`, result);
         } catch (error) {
-            log('error', `Error checking ${tokenInfo.name}:`, { error: error.message });
+            log('error', `Error checking ${tokenInfo.name} (${tokenInfo.token}):`, { error: error.message });
         }
     }
 }
